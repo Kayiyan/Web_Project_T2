@@ -8,15 +8,15 @@ $_SESSION['csrf_token'] = $csrf_token;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra CSRF token
-    if(!isset($_POST['csrf_token']) || ($_POST['csrf_token'] !== $_SESSION['csrf_token'])){
+    if (!isset($_POST['csrf_token']) || ($_POST['csrf_token'] !== $_SESSION['csrf_token'])) {
         die("CSRF token không hợp lệ");
     }
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    //Kiểm tra email và mật khẩu có hợp lệ hay không
-    if(empty($email) || empty($password)){
+    // Kiểm tra email và mật khẩu có hợp lệ hay không
+    if (empty($email) || empty($password)) {
         echo "Email hoặc mật khẩu không được để trống";
         exit;
     }
@@ -27,22 +27,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Tạo salt ngẫu nhiên
+    $salt = bin2hex(random_bytes(16));
+
+    // Kết hợp salt với mật khẩu
+    $salted_password = $password . $salt;
+
     // Mã hóa password
-    $password = password_hash($password, PASSWORD_DEFAULT);
+    $hashed_password = password_hash($salted_password, PASSWORD_DEFAULT);
 
     // Sử dụng Prepared Statement để khắc phục lỗi SQL Injection
     $stmt = $conn->prepare("SELECT * FROM `user` WHERE `email` = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows > 0) {
         // Lấy thông tin user từ db
         $row = $result->fetch_assoc();
 
         // Kiểm tra mật khẩu
-        if(password_verify($password, $row['password'])){
+        $salted_password_from_db = $row['password'];
+        $salt_from_db = substr($salted_password_from_db, strlen($password), 32); // Lấy salt từ mật khẩu đã mã hóa trong db
+        $salted_password_to_check = $password . $salt_from_db; // Kết hợp salt từ db với mật khẩu người dùng nhập vào
 
+        if (password_verify($salted_password_to_check, $salted_password_from_db)) {
             $_SESSION["email"] = $email;
 
             if ($row["role"] == 0) {
@@ -62,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 <!doctype html>

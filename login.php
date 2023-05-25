@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
-                    <form action="connectDB.php" class="signin-form" method="POST">
+                    <form action="functions.php" class="signin-form" method="POST">
                         <!-- Thêm CSRF token -->
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 

@@ -1,3 +1,3 @@
 
 
-# Note : Not done yet ( alsmost done , need hosting )
+# Note : Not done yet (  need hosting )

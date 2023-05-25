@@ -1,5 +1,5 @@
 <?php
-require 'connectDB.php';
+require_once 'functions.php';
 session_start();
 
 // Tạo CSRF token

@@ -50,7 +50,7 @@ function connectDB() {
 
 // Hàm chỉnh sửa thông tin sinh viên
 function editStudent($student_id, $student_name, $student_email, $student_phone) {
-    $conn = connectToDatabase();
+    $conn = connectDB();
     $stmt = $conn->prepare("UPDATE students SET name=?, email=?, phone=? WHERE id=?");
     $stmt->bind_param("sssi", $student_name, $student_email, $student_phone, $student_id);
     

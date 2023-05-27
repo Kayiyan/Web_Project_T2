@@ -7,10 +7,7 @@ if (!isset($_SESSION['email'])) {
     header("location: login.php");
     exit;
 }
-// check role
-if ($row["role"] != 1) {
-    echo "Bạn không có quyền truy cập vào trang này";
-    exit;
+
 }
 // Các chức năng của Giáo viên
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

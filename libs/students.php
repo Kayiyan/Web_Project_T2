@@ -97,16 +97,27 @@ function add_student($student_username, $student_password, $student_name, $stude
     // Hàm kết nối
     connect_db();
 
-    // // Chống SQL Injection
-    // $student_username = mysqli_real_escape_string($conn, $student_username);
-    // $student_password = mysqli_real_escape_string($conn, $student_password);
-    // $student_name = mysqli_real_escape_string($conn, $student_name);
-    // $student_email = mysqli_real_escape_string($conn, $student_email);
-    // $student_phone_number = mysqli_real_escape_string($conn, $student_phone_number);
+    // Chống SQL Injection
+    $student_username = mysqli_real_escape_string($conn, $student_username);
+    $student_password = mysqli_real_escape_string($conn, $student_password);
+    $student_name = mysqli_real_escape_string($conn, $student_name);
+    $student_email = mysqli_real_escape_string($conn, $student_email);
+    $student_phone_number = mysqli_real_escape_string($conn, $student_phone_number);
 
-    // Câu truy vấn thêm sinh viên    
-    $sql = "INSERT INTO student(username, password, name, email, phone_number, teacher_id) VALUES ('{$student_username}','{$student_password}','{$student_name}','{$student_email}','{$student_phone_number}',{1})";
-  
+    // Lấy teacher_id 
+    $teacher_id = null; // Giá trị mặc định là NULL nếu không có giáo viên tương ứng
+
+    $query_teacher = mysqli_query($conn, "SELECT id FROM teacher WHERE username = 'admin'"); 
+
+    if ($query_teacher && mysqli_num_rows($query_teacher) > 0) {
+        $row = mysqli_fetch_assoc($query_teacher);
+        $teacher_id = $row['id'];
+    }
+
+    // Câu truy vấn thêm sinh viên
+    $sql = "INSERT INTO student(username, password, name, email, phone_number, teacher_id) 
+            VALUES ('$student_username', '$student_password', '$student_name', '$student_email', '$student_phone_number', '$teacher_id')";
+
     // Thực hiện câu truy vấn
     $query = mysqli_query($conn, $sql);
 

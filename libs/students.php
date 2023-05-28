@@ -96,7 +96,6 @@ function add_student($student_username, $student_password, $student_name, $stude
 
     // Hàm kết nối
     connect_db();
-    echo "Hello";
 
     // // Chống SQL Injection
     // $student_username = mysqli_real_escape_string($conn, $student_username);

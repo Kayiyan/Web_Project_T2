@@ -22,14 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Lấy thông tin user từ db
         $row = $result->fetch_assoc();
 
-        // Lưu thông tin vào session 
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['name'] = $row['name'];
-        $_SESSION['email'] = $row['email'];
-        $_SESSION['phone_number'] = $row['phone_number'];
+        
 
         if ($password == $row['password']) {
             $_SESSION["username"] = $username;
+            // Lưu thông tin vào session 
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['name'] = $row['name'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['phone_number'] = $row['phone_number'];
 
             if ($row["type"] == "student") {
                 // Kiểm tra quyền của sinh viên và chuyển hướng tới trang student.php

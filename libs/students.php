@@ -104,22 +104,33 @@ function add_student($student_username, $student_password, $student_name, $stude
     $student_email = mysqli_real_escape_string($conn, $student_email);
     $student_phone_number = mysqli_real_escape_string($conn, $student_phone_number);
 
-    // Lấy teacher_id 
-    $teacher_id = null; // Giá trị mặc định là NULL nếu không có giáo viên tương ứng
+    // Kiểm tra xem học sinh đã có tài khoản trong bảng roles chưa
+    $query_role = mysqli_query($conn, "SELECT id FROM roles WHERE username = '$student_username'");
 
-    $query_teacher = mysqli_query($conn, "SELECT id FROM teacher WHERE username = 'admin'"); 
+    if ($query_role && mysqli_num_rows($query_role) == 0) {
+        // Chưa có tài khoản, thêm vào bảng roles trước
+        $role_sql = "INSERT INTO roles (type, username, password) 
+                     VALUES ('student', '$student_username', '$student_password')";
 
-    if ($query_teacher && mysqli_num_rows($query_teacher) > 0) {
-        $row = mysqli_fetch_assoc($query_teacher);
-        $teacher_id = $row['id'];
+        mysqli_query($conn, $role_sql);
     }
 
-    // Câu truy vấn thêm sinh viên
-    $sql = "INSERT INTO student(username, password, name, email, phone_number, teacher_id) 
-            VALUES ('$student_username', '$student_password', '$student_name', '$student_email', '$student_phone_number', '$teacher_id')";
+    // Lấy id từ bảng roles
+    $query_role = mysqli_query($conn, "SELECT id FROM roles WHERE username = '$student_username'");
 
-    // Thực hiện câu truy vấn
-    $query = mysqli_query($conn, $sql);
+    if ($query_role && mysqli_num_rows($query_role) > 0) {
+        $row = mysqli_fetch_assoc($query_role);
+        $role_id = $row['id'];
+
+        // Câu truy vấn thêm sinh viên
+        $student_sql = "INSERT INTO student (username, password, name, email, phone_number, teacher_id) 
+                        VALUES ('$student_username', '$student_password', '$student_name', '$student_email', '$student_phone_number', 1)";
+
+        // Thực hiện câu truy vấn
+        $query = mysqli_query($conn, $student_sql);
+    } else {
+        $query = false;
+    }
 
     // Đóng kết nối
     disconnect_db();

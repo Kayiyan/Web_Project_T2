@@ -1,3 +1,3 @@
 
 
-# Note : Not done yet ( FIX )
+# Note : need hosting

@@ -102,8 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
 
                         <div class="social d-flex text-center">
-                            <a href="https://www.facebook.com/" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
-                            <a href="https://twitter.com/" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
+                            <a href="https://www.youtube.com/watch?v=PxZrCKF8lPQ&t=1s" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
+                            <a href="https://www.youtube.com/watch?v=IqHTWeuyFdo" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
                         </div>
                     </form>
                 </div>
